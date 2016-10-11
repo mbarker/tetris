@@ -144,14 +144,20 @@ function rotate(matrix, dir) {
 
 function playerDrop() {
     player.pos.y++;
+    dropCounter = 0;
     if (collide(arena, player)) {
         player.pos.y--;
         merge(arena, player);
         playerReset();
         arenaSweep();
         updateScore();
+        return true;
     }
-    dropCounter = 0;
+    return false;
+}
+
+function playerDropDown() {
+    while (!playerDrop()) {}
 }
 
 function playerMove(offset) {
@@ -218,10 +224,12 @@ document.addEventListener('keydown', event => {
         playerMove(1);
     } else if (event.keyCode === 40) {
         playerDrop();
-    } else if (event.keyCode === 81) {
+    } else if (event.keyCode === 81 || event.keyCode === 38) {
         playerRotate(-1);
     } else if (event.keyCode === 87) {
         playerRotate(1);
+    } else if (event.keyCode === 32) {
+        playerDropDown();
     }
 });
 
